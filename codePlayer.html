@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous">
+		</script>
+		<style type="text/CSS">
+			body{
+				margin: 0px;
+			}
+			
+			#banner{
+				background-color: powderblue;
+				width: 100% -2px;
+				padding: 2px;
+			}
+			
+			#logo{
+				float: left;
+				font-size: 25px;
+				padding: 10px;
+			}
+			
+			.button{
+				border: 1px solid gray;
+				padding: 2px;
+				text-decoration: none;
+				background-color: #32a6a8;
+				color: white;
+				cursor: pointer;
+			}
+			
+			.hover{
+				background-color: #5ae6e8;
+			}
+			
+			.selected{
+				background-color: #1d8dde;
+			}
+						
+			li{				
+				display:inline;				
+			}
+			
+			#panelDiv{
+				width: 100%;
+				position: fixed;
+			}
+			
+			.panel{
+				height: 100%;
+				outline: none;
+				resize:none; 
+				border: none;
+				border-right: 1px solid gray;
+				border-bottom: 1px solid gray;
+				width: 49.5%;
+			}
+			
+		</style>
+	</head>
+	
+	<body>
+		
+		<div id="banner">
+			<div id="logo">CodePlayer</div>
+			<div align="center">
+				<ul>
+					<li><button class="button selected">HTML</button></li>	
+					<li><button class="button">CSS</button></li>
+					<li><button class="button">JavaScript</button></li>
+					<li><button class="button selected">Output</button></li>
+				</ul>
+			</div>
+		</div>
+		
+		<div id="panelDiv">
+			<textarea id="HTML" class="panel" placeholder="<p>HTML Code Here..</p>"></textarea>
+			<textarea id="CSS" class="panel" style="display: none;" placeholder=".class{ width: 10px;}"></textarea>
+			<textarea id="JavaScript" class="panel" style="display: none;" placeholder="alert('JavaScript!!')"></textarea>
+			<iframe id="Output" class="panel" style="border-right: 1px solid gray;"></iframe>
+		</div>
+		
+	
+	
+	<script type="text/javascript">
+		$(".button").hover(function(){
+			$(this).addClass("hover");
+		}, function(){
+			$(this).removeClass("hover");
+		});
+		
+		$(".button").click(function(){
+			$(this).toggleClass("selected");
+			$("#"+$(this).html()).toggle();
+			$(".panel").width(($(window).width()) / ($(".selected").length) -7.5);
+		});
+		
+		$("#panelDiv").height(($(window).height()) - ($("#banner").height()) -10);
+		
+		$(".panel").keyup(function(){
+			$("#Output").attr("srcdoc", "<html><head><style>" + $('#CSS').val() + "</style></head><body>" + $('#HTML').val() + "</body></html>");
+			var _script = $("#JavaScript").val();
+			$('#Output').contents().find('body').append($('<script>').html(_script));
+		});
+			
+		
+	</script>
+	
+	</body>
+	
+</html>
